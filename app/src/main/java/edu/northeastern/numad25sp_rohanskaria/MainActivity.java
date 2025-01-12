@@ -7,8 +7,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+    private Button aboutMeButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,5 +26,18 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        aboutMeButton = findViewById(R.id.aboutMeButton);
+        aboutMeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAboutMeToast();
+            }
+        });
+    }
+
+    private void showAboutMeToast() {
+        String message = "Rohan Skaria\nrohan.skaria@gmail.com";
+        Toast.makeText(this,message,Toast.LENGTH_LONG).show();
     }
 }
