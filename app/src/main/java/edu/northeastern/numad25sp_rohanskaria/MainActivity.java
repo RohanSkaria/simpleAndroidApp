@@ -1,19 +1,22 @@
 package edu.northeastern.numad25sp_rohanskaria;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
+
+
 
 public class MainActivity extends AppCompatActivity {
     private Button aboutMeButton;
+    private Button calcButton;
 
 
     @Override
@@ -34,10 +37,23 @@ public class MainActivity extends AppCompatActivity {
                 showAboutMeToast();
             }
         });
+
+        calcButton = findViewById(R.id.quickCalcButton);
+        calcButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchCalculator();
+            }
+        });
     }
 
     private void showAboutMeToast() {
         String message = "Rohan Skaria\nrohan.skaria@gmail.com";
         Toast.makeText(this,message,Toast.LENGTH_LONG).show();
+    }
+
+    private void launchCalculator() {
+        Intent intent = new Intent(this, CalcActivity.class);
+        startActivity(intent);
     }
 }
