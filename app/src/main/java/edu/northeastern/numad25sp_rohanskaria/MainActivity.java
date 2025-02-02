@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         aboutMeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAboutMeToast();
+                launchAboutMe();
             }
         });
 
@@ -47,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void showAboutMeToast() {
-        String message = "Rohan Skaria\nrohan.skaria@gmail.com";
-        Toast.makeText(this,message,Toast.LENGTH_LONG).show();
+    private void launchAboutMe() {
+        Intent intent = new Intent(this, AboutMeActivity.class);
+        startActivity(intent);
     }
 
     private void launchCalculator() {

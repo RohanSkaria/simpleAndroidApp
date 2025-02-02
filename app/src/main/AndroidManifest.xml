@@ -25,6 +25,10 @@
         <activity
             android:name=".CalcActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".AboutMeActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>
