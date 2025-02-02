@@ -17,6 +17,8 @@ import androidx.core.view.WindowInsetsCompat;
 public class MainActivity extends AppCompatActivity {
     private Button aboutMeButton;
     private Button calcButton;
+    private Button linkCollectorButton;
+
 
 
     @Override
@@ -45,6 +47,14 @@ public class MainActivity extends AppCompatActivity {
                 launchCalculator();
             }
         });
+
+        linkCollectorButton = findViewById(R.id.linkCollectorButton);
+        linkCollectorButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchLinkCollector();
+            }
+        });
     }
 
     private void launchAboutMe() {
@@ -54,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void launchCalculator() {
         Intent intent = new Intent(this, CalcActivity.class);
+        startActivity(intent);
+    }
+
+    private void launchLinkCollector() {
+        Intent intent = new Intent(this, LinkCollectorActivity.class);
         startActivity(intent);
     }
 }
