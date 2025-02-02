@@ -12,6 +12,7 @@ public class Link implements Parcelable {
         this.url = url;
     }
 
+    //Parcel to restore links
     protected Link(Parcel in) {
         name = in.readString();
         url = in.readString();
@@ -29,6 +30,23 @@ public class Link implements Parcelable {
         }
     };
 
+
+    public String getName() {
+        return name;
+
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     @Override
     public int describeContents() {
