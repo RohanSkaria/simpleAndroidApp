@@ -28,7 +28,7 @@ public class LinkCollectorActivity extends AppCompatActivity {
 
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
-            System.out.println("Button Clicked");
+            showAddLinkMessage();
         });
 
         adapter = new LinkAdapter();
