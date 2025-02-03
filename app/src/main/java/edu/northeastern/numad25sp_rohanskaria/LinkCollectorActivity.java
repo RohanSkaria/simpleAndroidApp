@@ -18,7 +18,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
-public class LinkCollectorActivity extends AppCompatActivity {
+public class LinkCollectorActivity extends AppCompatActivity implements LinkAdapter.OnLinkLongClickListener{
     private RecyclerView rv;
     private FloatingActionButton fab;
     private LinkAdapter adapter;
@@ -36,7 +36,7 @@ public class LinkCollectorActivity extends AppCompatActivity {
             showAddLinkMessage();
         });
 
-        adapter = new LinkAdapter();
+        adapter = new LinkAdapter(this);
         rv.setAdapter(adapter);
 
         if (savedInstanceState != null) {
@@ -76,6 +76,36 @@ public class LinkCollectorActivity extends AppCompatActivity {
         }).attachToRecyclerView(rv);
     }
 
+    @Override
+    public void onLinkLongClick(int pos, Link link) {
+        showEditLink(pos, link);
+    }
+
+    private void showEditLink(int pos, Link link) {
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.add_link_card,null);
+        EditText nameEdit = dialogView.findViewById(R.id.editName);
+        EditText urlEdit = dialogView.findViewById(R.id.editUrl);
+
+        nameEdit.setText(link.getName());
+        urlEdit.setText(link.getUrl());
+
+        new AlertDialog.Builder(this).setTitle("Edit Link").setView(dialogView)
+                .setPositiveButton("Save", (dialog, which) -> {
+                    String name = nameEdit.getText().toString();
+                    String url = urlEdit.getText().toString();
+
+                    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                        url = "https://"+ url;
+                    }
+
+                    Link updated = new Link(name, url);
+                    adapter.updateLink(pos, updated);
+
+                    Snackbar.make(rv, "Link Edited Successfully", Snackbar.LENGTH_LONG).show();
+                })
+                .setNegativeButton("Cancel",null)
+                .show();
+    }
     private void showAddLinkMessage() {
         View dialogView = LayoutInflater.from(this).inflate(R.layout.add_link_card, null);
         EditText nameEdit = dialogView.findViewById(R.id.editName);

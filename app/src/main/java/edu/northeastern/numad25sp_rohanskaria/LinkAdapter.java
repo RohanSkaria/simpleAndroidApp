@@ -13,10 +13,22 @@ import java.util.ArrayList;
 public class LinkAdapter extends RecyclerView.Adapter<LinkAdapter.LinkViewHolder> {
 
     private ArrayList<Link> links;
+    private OnLinkLongClickListener longClickListener;
 
+    public interface OnLinkLongClickListener {
+        void onLinkLongClick(int pos, Link link);
+    }
+
+    public LinkAdapter(OnLinkLongClickListener listener) {
+        this.links = new ArrayList<>();
+        this.longClickListener = listener;
+    }
     public LinkAdapter() {
         this.links = new ArrayList<>();
+        this.longClickListener = null;
     }
+
+
 
     @NonNull
     @Override
@@ -35,6 +47,13 @@ public class LinkAdapter extends RecyclerView.Adapter<LinkAdapter.LinkViewHolder
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(currentLink.getUrl()));
             v.getContext().startActivity(intent);
         });
+
+        if (longClickListener != null) {
+            holder.itemView.setOnLongClickListener(v -> {
+                longClickListener.onLinkLongClick(position, currentLink);
+                return true;
+            });
+        }
     }
 
     @Override
@@ -63,6 +82,11 @@ public class LinkAdapter extends RecyclerView.Adapter<LinkAdapter.LinkViewHolder
     public void removeLink(int pos) {
         links.remove(pos);
         notifyItemRemoved(pos);
+    }
+
+    public void updateLink(int pos, Link link) {
+        links.set(pos, link);
+        notifyItemChanged(pos);
     }
 
     public void insertLink(int pos, Link link) {
