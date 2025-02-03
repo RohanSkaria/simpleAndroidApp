@@ -29,6 +29,7 @@ public class LinkAdapter extends RecyclerView.Adapter<LinkAdapter.LinkViewHolder
     public void onBindViewHolder(@NonNull LinkViewHolder holder, int position) {
         Link currentLink = links.get(position);
         holder.name.setText(currentLink.getName());
+        holder.url.setText(currentLink.getUrl());
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(currentLink.getUrl()));
