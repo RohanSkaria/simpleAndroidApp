@@ -42,6 +42,10 @@ public class LinkAdapter extends RecyclerView.Adapter<LinkAdapter.LinkViewHolder
         return links.size();
     }
 
+    public Link getLink(int pos) {
+        return links.get(pos);
+    }
+
     public void addLink(Link link) {
         links.add(link);
         notifyItemInserted(links.size() -1);
@@ -54,6 +58,16 @@ public class LinkAdapter extends RecyclerView.Adapter<LinkAdapter.LinkViewHolder
     public void setLinks(ArrayList<Link> newLinks) {
         links = newLinks;
         notifyDataSetChanged();
+    }
+
+    public void removeLink(int pos) {
+        links.remove(pos);
+        notifyItemRemoved(pos);
+    }
+
+    public void insertLink(int pos, Link link) {
+        links.add(pos , link);
+        notifyItemInserted(pos);
     }
 
     static class LinkViewHolder extends RecyclerView.ViewHolder {

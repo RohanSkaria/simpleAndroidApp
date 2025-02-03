@@ -1,6 +1,7 @@
 package edu.northeastern.numad25sp_rohanskaria;
 
 import android.app.AlertDialog;
+import android.content.ClipData;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,12 +45,35 @@ public class LinkCollectorActivity extends AppCompatActivity {
                 adapter.setLinks(saved);
             }
         }
+
+        initSwipeToDelete();
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle out) {
         super.onSaveInstanceState(out);
         out.putParcelableArrayList("links", adapter.getLinks());
+    }
+
+
+    private void initSwipeToDelete() {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int pos = viewHolder.getAdapterPosition();
+                Link deletedLink = adapter.getLink(pos);
+                adapter.removeLink(pos);
+
+                Snackbar.make(rv, "Link Deleted", Snackbar.LENGTH_LONG).setAction("Undo", v-> {
+                    adapter.insertLink(pos,deletedLink);
+                }).show();
+            }
+        }).attachToRecyclerView(rv);
     }
 
     private void showAddLinkMessage() {
