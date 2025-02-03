@@ -6,12 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.ArrayList;
 
 public class LinkCollectorActivity extends AppCompatActivity {
     private RecyclerView rv;
@@ -33,6 +36,19 @@ public class LinkCollectorActivity extends AppCompatActivity {
 
         adapter = new LinkAdapter();
         rv.setAdapter(adapter);
+
+        if (savedInstanceState != null) {
+            ArrayList<Link> saved = savedInstanceState.getParcelableArrayList("links");
+            if (saved != null) {
+                adapter.setLinks(saved);
+            }
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle out) {
+        super.onSaveInstanceState(out);
+        out.putParcelableArrayList("links", adapter.getLinks());
     }
 
     private void showAddLinkMessage() {
@@ -52,4 +68,6 @@ public class LinkCollectorActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel",null)
                 .show();
     }
+
+
 }

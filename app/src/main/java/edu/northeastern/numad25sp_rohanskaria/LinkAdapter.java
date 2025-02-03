@@ -1,6 +1,9 @@
 package edu.northeastern.numad25sp_rohanskaria;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +29,11 @@ public class LinkAdapter extends RecyclerView.Adapter<LinkAdapter.LinkViewHolder
     public void onBindViewHolder(@NonNull LinkViewHolder holder, int position) {
         Link currentLink = links.get(position);
         holder.name.setText(currentLink.getName());
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(currentLink.getUrl()));
+            v.getContext().startActivity(intent);
+        });
     }
 
     @Override
@@ -36,6 +44,15 @@ public class LinkAdapter extends RecyclerView.Adapter<LinkAdapter.LinkViewHolder
     public void addLink(Link link) {
         links.add(link);
         notifyItemInserted(links.size() -1);
+    }
+
+    public ArrayList<Link> getLinks() {
+        return new ArrayList<>(links);
+    }
+
+    public void setLinks(ArrayList<Link> newLinks) {
+        links = newLinks;
+        notifyDataSetChanged();
     }
 
     static class LinkViewHolder extends RecyclerView.ViewHolder {
