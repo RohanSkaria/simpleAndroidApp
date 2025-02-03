@@ -60,6 +60,11 @@ public class LinkCollectorActivity extends AppCompatActivity {
                 .setPositiveButton("Add", (dialog, which) -> {
                     String name = nameEdit.getText().toString();
                     String url = urlEdit.getText().toString();
+
+                    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+                        url = "https://"+ url;
+                    }
+
                     Link newLink = new Link(name, url);
                     adapter.addLink(newLink);
 
