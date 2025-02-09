@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
     private Button calcButton;
     private Button linkCollectorButton;
 
+    private Button primeSearchButton;
+
 
 
     @Override
@@ -55,6 +57,15 @@ public class MainActivity extends AppCompatActivity {
                 launchLinkCollector();
             }
         });
+
+        primeSearchButton = findViewById(R.id.primeSearchButton);
+        primeSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchPrimeSearch();
+            }
+        });
+
     }
 
     private void launchAboutMe() {
@@ -69,6 +80,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void launchLinkCollector() {
         Intent intent = new Intent(this, LinkCollectorActivity.class);
+        startActivity(intent);
+    }
+
+    private void launchPrimeSearch() {
+        Intent intent = new Intent(this, PrimeActivity.class);
         startActivity(intent);
     }
 }
