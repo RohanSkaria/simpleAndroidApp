@@ -8,6 +8,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 public class PrimeActivity extends AppCompatActivity{
     private Button findPrimesButton;
@@ -25,10 +26,12 @@ public class PrimeActivity extends AppCompatActivity{
     private Handler mainHandler;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prime);
+
         findPrimesButton = findViewById(R.id.findPrimesButton);
         terminateSearchButton = findViewById(R.id.terminateSearchButton);
         pacifierSwitchCheck = findViewById(R.id.pacifierSwitchCheck);
@@ -46,11 +49,14 @@ public class PrimeActivity extends AppCompatActivity{
             isSearching = savedInstanceState.getBoolean("isSearching", false);
             pacifierSwitchCheck.setChecked(savedInstanceState.getBoolean("pacifierState", false));
             updateUI();
+
+
+            if (isSearching) {
+                new Handler().post(() -> startPrimeSearch());
+            }
         }
 
-        if (isSearching) {
-            startPrimeSearch();
-        }
+        updateButtonStates();
     }
 
     //Helper function to determine if a number is prime
@@ -78,41 +84,33 @@ public class PrimeActivity extends AppCompatActivity{
         terminateSearchButton.setEnabled(isSearching);
     }
     private void startPrimeSearch() {
-        if(isSearching) {
+        if (isSearching) {
             return;
         }
 
         isSearching = true;
-        currNum = 3;
 
-        searchThread = new Thread(()-> {
-           while (isSearching) {
-               if (isPrime(currNum)) {
-                   currPrime = currNum;
-                   mainHandler.post(this::updateUI);
-               }
-               currNum +=2;
-               mainHandler.post(this::updateUI);
-           }
+        searchThread = new Thread(() -> {
+            long searchNum = currNum;
+
+            while (isSearching) {
+                if (isPrime(searchNum)) {
+                    currPrime = searchNum;
+                    currNum = searchNum;
+                    mainHandler.post(this::updateUI);
+                }
+                searchNum += 2;
+                currNum = searchNum;
+                mainHandler.post(this::updateUI);
+                Thread.yield();
+            }
         });
 
         searchThread.start();
         updateButtonStates();
     }
-
     private void stopPrimeSearch() {
-        if(!isSearching) {
-            return;
-        }
-
         isSearching = false;
-        if (searchThread != null) {
-            try {
-                searchThread.join();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
         updateButtonStates();
     }
 
@@ -132,6 +130,23 @@ public class PrimeActivity extends AppCompatActivity{
     protected void onDestroy() {
         super.onDestroy();
         stopPrimeSearch();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isSearching) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Leave?")
+                    .setMessage("Are you sure you want to stop searching?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        stopPrimeSearch();
+                        super.onBackPressed();
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        } else {
+            super.onBackPressed();
+        }
     }
 
 }
