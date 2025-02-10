@@ -6,6 +6,8 @@ import android.os.Looper;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 public class PrimeActivity extends AppCompatActivity{
     private Button findPrimesButton;
@@ -37,6 +39,18 @@ public class PrimeActivity extends AppCompatActivity{
 
         findPrimesButton.setOnClickListener(v-> startPrimeSearch());
         terminateSearchButton.setOnClickListener(v-> stopPrimeSearch());
+
+        if (savedInstanceState != null) {
+            currNum = savedInstanceState.getLong("currentNumber", 3);
+            currPrime = savedInstanceState.getLong("latestPrime", 0);
+            isSearching = savedInstanceState.getBoolean("isSearching", false);
+            pacifierSwitchCheck.setChecked(savedInstanceState.getBoolean("pacifierState", false));
+            updateUI();
+        }
+
+        if (isSearching) {
+            startPrimeSearch();
+        }
     }
 
     //Helper function to determine if a number is prime
@@ -100,6 +114,24 @@ public class PrimeActivity extends AppCompatActivity{
             }
         }
         updateButtonStates();
+    }
+
+
+    // restores previous states when screen moves
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putLong("currentNumber", currNum);
+        outState.putLong("latestPrime", currPrime);
+        outState.putBoolean("isSearching", isSearching);
+        outState.putBoolean("pacifierState", pacifierSwitchCheck.isChecked());
+    }
+
+    //stops search when task is closed.
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopPrimeSearch();
     }
 
 }
