@@ -87,4 +87,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, PrimeActivity.class);
         startActivity(intent);
     }
+
+//    private void launchLocation() {
+//        Intent intent = new Intent(this, LocationActivity.class);
+//        startActivity(intent);
+//    }
 }
