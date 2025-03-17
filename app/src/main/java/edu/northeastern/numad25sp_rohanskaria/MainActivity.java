@@ -66,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        primeSearchButton = findViewById(R.id.locationButton);
+        primeSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchLocationActivity();
+            }
+        });
+
     }
 
     private void launchAboutMe() {
@@ -88,8 +96,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-//    private void launchLocation() {
-//        Intent intent = new Intent(this, LocationActivity.class);
-//        startActivity(intent);
-//    }
+    private void launchLocationActivity() {
+        Intent intent = new Intent(this, LocationActivity.class);
+        startActivity(intent);
+    }
 }
